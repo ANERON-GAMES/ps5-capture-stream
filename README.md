@@ -2,7 +2,7 @@
 
 Low-latency fullscreen preview of a PS5 HDMI capture card on Windows.
 
-The capture card is shown as it arrives: 1920x1080 at 60 fps. The player does not interpolate frames, blur the picture, or scale it in the capture path. Those steps add delay. The laptop display may letterbox a 16:9 frame on a 16:10 panel.
+The capture card is shown as it arrives: 1920x1080 at 60 fps. The sharp frame stays 16:9. On a 16:10 panel the bars are filled with an 8x8 average of that frame, not a full blur. Frame interpolation and heavy scalers are off because they make the delay jump.
 
 ## What you need
 
@@ -27,7 +27,7 @@ The first launch builds `PS5Stream.exe` from `PS5Stream.cs`. The window lists th
 - `video` and `audio` override auto-detect. Leave them empty to pick the capture card.
 - `rtbuf_kb` is the capture buffer cap. Keep it small. A multi-megabyte buffer holds old frames and the lag grows.
 - `audio_buffer_ms` is the DirectShow audio buffer.
-- `fill_screen=0` is the stable game path. `lanczos` and `stretch` add processing and delay.
+- `fill_screen=ambient` fills the bars from an 8x8 color average. `0` leaves black bars. `stretch` fills the panel and costs more.
 - `fullscreen=1` starts fullscreen.
 
 A log is written to `ps5stream.log` on every launch. Repeated lines are collapsed.

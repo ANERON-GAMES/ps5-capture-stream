@@ -154,7 +154,7 @@ class PS5Stream
     // The sharp 16:9 frame stays intact. A soft copy of the same frame fills the 16:10 bars.
     static string FillFilter()
     {
-        string mode = Get("fill_screen", "0");
+        string mode = Get("fill_screen", "ambient");
         if (mode == "0" || mode.Equals("off", StringComparison.OrdinalIgnoreCase)) return null;
         int sw = Even(GetSystemMetrics(0));
         int sh = Even(GetSystemMetrics(1));
@@ -170,9 +170,9 @@ class PS5Stream
         }
         int ox = (sw - dw) / 2;
         int oy = (sh - dh) / 2;
-        return "scale=iw:ih:in_range=jpeg:out_range=pc,format=yuv420p,minterpolate=fps=120:mi_mode=blend,split[fg][bg];"
-            + "[bg]scale=160:90,boxblur=8:1,scale=" + sw + ":" + sh + ":force_original_aspect_ratio=increase,crop=" + sw + ":" + sh + "[bgb];"
-            + "[fg]zscale=w=" + dw + ":h=" + dh + ":filter=lanczos:primariesin=709:primaries=smpte432:transferin=709:transfer=709:matrixin=709:matrix=709:rangein=full:range=full[fgs];"
+        return "scale=iw:ih:in_range=jpeg:out_range=pc:flags=neighbor,format=yuv420p,split[fg][bg];"
+            + "[bg]scale=8:8,scale=" + sw + ":" + sh + ":flags=bilinear[bgb];"
+            + "[fg]scale=" + dw + ":" + dh + ":flags=bilinear[fgs];"
             + "[bgb][fgs]overlay=" + ox + ":" + oy + ",setsar=1,setpts=0";
     }
 
