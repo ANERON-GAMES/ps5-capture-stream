@@ -25,6 +25,11 @@ class PS5Stream
         string dir = AppDomain.CurrentDomain.BaseDirectory;
         OpenLog(dir);
         LoadConfig(Path.Combine(dir, "ps5stream.ini"));
+        string launch = "plain";
+        if (args != null && args.Length > 0 && args[0].Equals("blur", StringComparison.OrdinalIgnoreCase))
+            launch = "blur";
+        cfg["fill_screen"] = launch == "blur" ? "ambient" : "0";
+        Note("Launch       : " + launch);
 
         string ffmpeg = FindTool("ffmpeg.exe", dir);
         string ffplay = FindTool("ffplay.exe", dir);
@@ -83,7 +88,7 @@ class PS5Stream
         sb.Append('"');
         sb.Append(" -framedrop -sync video -vf ");
         sb.Append(vf == null ? "setpts=0" : vf);
-        sb.Append(" -window_title \"PS5\"");
+        sb.Append(" -window_title \"").Append(launch == "blur" ? "PS5 Blur" : "PS5").Append('"');
         if (Get("fullscreen", "1") == "1") sb.Append(" -fs");
         string extra = Get("extra", "");
         if (extra.Length > 0) sb.Append(' ').Append(extra);

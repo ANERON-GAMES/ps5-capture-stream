@@ -14,9 +14,10 @@ The capture card is shown as it arrives: 1920x1080 at 60 fps. The sharp frame st
 
 ```
 PS5.bat
+PS5-blur.bat
 ```
 
-The first launch builds `PS5Stream.exe` from `PS5Stream.cs`. The window lists the video and audio devices it found. Keys inside the picture: F or double-click for fullscreen, M mute, 9 and 0 volume, Esc or Q quit.
+`PS5.bat` shows the 16:9 frame with black bars. `PS5-blur.bat` fills those bars with an 8x8 color average of the same frame. The first launch builds `PS5Stream.exe` from `PS5Stream.cs`. Keys inside the picture: F or double-click for fullscreen, M mute, 9 and 0 volume, Esc or Q quit.
 
 `Devices.bat` prints the DirectShow device list.
 
@@ -27,7 +28,7 @@ The first launch builds `PS5Stream.exe` from `PS5Stream.cs`. The window lists th
 - `video` and `audio` override auto-detect. Leave them empty to pick the capture card.
 - `rtbuf_kb` is the capture buffer cap. Keep it small. A multi-megabyte buffer holds old frames and the lag grows.
 - `audio_buffer_ms` is the DirectShow audio buffer.
-- `fill_screen=ambient` fills the bars from an 8x8 color average. `0` leaves black bars. `stretch` fills the panel and costs more.
+- `PS5.bat` forces black bars. `PS5-blur.bat` forces the 8x8 color fill. The `fill_screen` value in the ini is only the fallback when the exe is started with no argument.
 - `fullscreen=1` starts fullscreen.
 
 A log is written to `ps5stream.log` on every launch. Repeated lines are collapsed.
